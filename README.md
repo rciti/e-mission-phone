@@ -148,6 +148,26 @@ One advantage of using `skip` authentication in development mode is that any use
 Updating the e-mission-\* plugins or adding new plugins
 ---
 
+Pre-requisites
+---
+- the version of xcode used by the CI
+    - to install a particular version, use [xcode-select](https://www.unix.com/man-page/OSX/1/xcode-select/)
+    - or this [supposedly easier to use repo](https://github.com/xcpretty/xcode-install)
+- git
+- the most recent version of android studio
+
+Important
+---
+Most of the recent issues encountered have been due to incompatible setup. We
+have now:
+- locked down the dependencies,
+- created setup and teardown scripts to setup self-contained environments with
+  those dependencies, and
+- CI enabled to validate that they continue work.
+
+If you have setup failures, please compare the configuration in the passing CI
+builds with your configuration. That is almost certainly the source of the error.
+
 Installing
 ---
 We are using the ionic v3.19.1 platform, which is a toolchain on top of the apache
