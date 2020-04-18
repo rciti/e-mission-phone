@@ -49,7 +49,6 @@ jobs:
         source setup/activate_serve.sh
         echo "cordova version"
         npx cordova -version
-        echo "ionic version"
         npx ionic --version
 
 # TODO: figure out how to check that a server started correctly
