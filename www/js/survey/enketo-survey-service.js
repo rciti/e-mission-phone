@@ -152,6 +152,15 @@ angular.module('emission.enketo-survey.service', [
     });
   }
 
+  function _sync_getStartTransitionKey() {
+    if(ionic.Platform.isAndroid()) {
+      return "local.transition.exited_geofence";
+    }
+    else if(ionic.Platform.isIOS()) {
+      return "T_EXITED_GEOFENCE";
+    }
+  }
+
   function _sync_getEndTransitionKey() {
     if(ionic.Platform.isAndroid()) {
       return 'local.transition.stopped_moving';
@@ -176,7 +185,7 @@ angular.module('emission.enketo-survey.service', [
 
   function _sync_endForceSync() {
     var sensorKey = 'statemachine/transition';
-    return _sync_getTransition(_sync_getEndTransitionKey()).then(function(entry_data) {
+    return _sync_getTransition(_sync_getStartTransitionKey()).then(function(entry_data) {
       return $window.cordova.plugins.BEMUserCache.putMessage(sensorKey, entry_data);
     }).then(function() {
       return _sync_getTransition(_sync_getEndTransitionKey()).then(function(entry_data) {
