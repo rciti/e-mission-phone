@@ -16,92 +16,30 @@ Updating the UI only
 ---
 If you want to make only UI changes, (as opposed to modifying the existing plugins, adding new plugins, etc), you can use the **new and improved** (as of June 2018) e-mission dev app. 
 
-### Dependencies
-1. node.js: You probably want to install this using [nvm](https://github.com/creationix/nvm), to ensure that you can pick a particular [version of node](https://github.com/creationix/nvm#usage).
-    ```
-    $ node -v
-    v9.4.0
-    $ npm -v
-    6.0.0
-    ```
-    
-  Make sure that the permissions are set correctly - npm and node need to be owned by `root` or another admin user.
-
-  ```
-  $ which npm
-  /usr/local/bin/npm
-  $ ls -al /usr/local/bin/npm
-  lrwxr-xr-x  1 root  wheel  38 May  8 10:04 /usr/local/bin/npm -> ../lib/node_modules/npm/bin/npm-cli.js
-  $ ls -al /usr/local/lib/node_modules/npm/bin/npm-cli.js
-  -rwxr-xr-x  1 cusgadmin  staff  4295 Oct 26  1985 /usr/local/lib/node_modules/npm/bin/npm-cli.js
-  ```
-  
-2. [bower](https://bower.io/):
+### Installing (one-time)
 
   ```
   $ bower -v
   1.8.4
   ```
 
-### Installation
-1. Install the most recent release of the em-devapp (https://github.com/e-mission/e-mission-devapp)
+```
+$ bash setup/setup_serve.sh
+```
 
 1. Get the current version of the phone UI code
 
-    1. Fork this repo using the github UI
+```
+$ ls www/json/*.sample
+$ cp www/json/startupConfig.json.sample www/json/startupConfig.json
+$ cp ..... www/json/connectionConfig.json
+```
 
-    1. Clone your fork
+### Activation (after install, and in every new shell)
 
-    ```
-    $ git clone <your repo URL>
-    ```
-
-    ```
-    $ cd e-mission-phone
-    ```
-    
-1. Create a remote to pull updates from upstream
-
-    ```
-    $ git remote add upstream https://github.com/e-mission/e-mission-phone.git
-    ```
-    
-1. Setup the config
-
-    ```
-    $ ./bin/configure_xml_and_json.js serve
-    ```
-
-1. Install all required node modules 
-
-    ```
-    $ npm install
-    ```
- 1. Install javascript dependencies
- 
-    ```
-    $ bower install
-    ```
-    
-1. Configure values if necessary - e.g.
-
-    ```
-    $ ls www/json/*.sample
-    $ cp www/json/setupConfig.json.sample www/json/setupConfig.json
-    $ cp ..... www/json/connectionConfig.json
-    ```
-  
-1. Run the setup script
-
-    ```
-    $ npm run setup-serve
-    > edu.berkeley.eecs.emission@2.5.0 setup /private/tmp/e-mission-phone
-    > ./bin/download_settings_controls.js
-
-    Sync collection settings updated
-    Data collection settings updated
-    Transition notify settings updated
-    ```
+```
+$ source setup/activate_serve.sh
+```
   
 ### Running
 
@@ -129,7 +67,6 @@ If you want to make only UI changes, (as opposed to modifying the existing plugi
 
 **Note1**: You may need to scroll up, past all the warnings about `Content Security Policy has been added` to find the port that the server is listening to.
 
-
 End to end testing
 ---
 A lot of the visualizations that we display in the phone client come from the server. In order to do end to end testing, we need to run a local server and connect to it. Instructions for:
@@ -153,6 +90,8 @@ Pre-requisites
 - the version of xcode used by the CI
     - to install a particular version, use [xcode-select](https://www.unix.com/man-page/OSX/1/xcode-select/)
     - or this [supposedly easier to use repo](https://github.com/xcpretty/xcode-install)
+    - **NOTE**: the basic xcode install was messed up for me due to issues with the command line tools. [These workarounds helped](https://github.com/nodejs/node-gyp/blob/master/macOS_Catalina.md).
+    - **NOTE**: although Catalina has a `/usr/bin/java`, trying to run it gives the error `No Java runtime present, requesting install.`. Installed [OpenJDK using AdoptOpenJDK](https://adoptopenjdk.net/releases.html) to be consistent with the CI.
 - git
 - the most recent version of android studio
 
@@ -168,7 +107,7 @@ have now:
 If you have setup failures, please compare the configuration in the passing CI
 builds with your configuration. That is almost certainly the source of the error.
 
-Installing
+Installing (one time only)
 ---
 We are using the ionic v3.19.1 platform, which is a toolchain on top of the apache
 cordova project. So the first step is to install ionic using their instructions.
@@ -213,7 +152,9 @@ $ ./bin/configure_xml_and_json.js cordovabuild
 Install all javascript components using bower
 
 ```
-$ bower update
+$ bash setup/setup_android_native.sh
+AND/OR
+$ bash setup/setup_ios_native.sh
 ```
 
 Make sure to install the other node modules required for the setup scripts.
@@ -222,7 +163,15 @@ Make sure to install the other node modules required for the setup scripts.
 npm install
 ```
 
-Create a remote to pull updates from upstream
+### Activation (after install, and in every new shell)
+
+```
+$ source setup/activate_native.sh
+```
+
+
+
+Run in the emulator
 
 ```
 $ git remote add upstream https://github.com/e-mission/e-mission-phone.git
