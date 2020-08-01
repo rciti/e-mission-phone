@@ -41,9 +41,16 @@ jobs:
     - name: Setup the serve environment
       shell: bash -l {0}
       run: |
-        source setup/setup_shared.sh
+        bash setup/setup_serve.sh
+    
+    - name: Check tool versions
+      shell: bash -l {0}
+      run: |
+        source setup/activate_serve.sh
+        echo "cordova version"
         npx cordova -version
-        npx ionic -version
+        echo "ionic version"
+        npx ionic --version
 
 # TODO: figure out how to check that a server started correctly
 #    - name: Try starting it
