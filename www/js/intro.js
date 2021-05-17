@@ -1,6 +1,8 @@
 'use strict';
 
 angular.module('emission.intro', ['emission.splash.startprefs',
+                                  'emission.splash.updatecheck',
+                                  'emission.i18n.utils',
                                   'ionic-toast'])
 
 .config(function($stateProvider) {
@@ -18,27 +20,55 @@ angular.module('emission.intro', ['emission.splash.startprefs',
   });
 })
 
-.controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate,
-    $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, $translate, $cordovaFile) {
-  
-  $scope.getConsentFile = function () {
-    var lang = $translate.use();
-    $scope.consentFile = "templates/intro/consent.html";
-    if (lang != 'en') {
-      var url = "www/i18n/intro/consent-" + lang + ".html";
-      $cordovaFile.checkFile(cordova.file.applicationDirectory, url).then( function(result){
-        window.Logger.log(window.Logger.LEVEL_DEBUG,
-          "Successfully found the consent file, result is " + JSON.stringify(result));
-        $scope.consentFile = url.replace("www/", "");
-      }, function (err) {
-        window.Logger.log(window.Logger.LEVEL_DEBUG,
-          "Consent file not found, loading english version, error is " + JSON.stringify(err));
-          $scope.consentFile = "templates/intro/consent.html";
-        });
+.controller('IntroCtrl', function($scope, $state, $window, $ionicSlideBoxDelegate,
+    $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, UpdateCheck, $translate, i18nUtils) {
+
+  $scope.platform = $window.device.platform;
+  $scope.osver = $window.device.version.split(".")[0];
+  if($scope.platform.toLowerCase() == "android") {
+    if($scope.osver < 6) {
+        $scope.locationPermExplanation = $translate.instant('intro.permissions.locationPermExplanation-android-lt-6');
+    } else if ($scope.osver < 10) {
+        $scope.locationPermExplanation = $translate.instant("intro.permissions.locationPermExplanation-android-gte-6");
+    } else {
+        $scope.locationPermExplanation = $translate.instant("intro.permissions.locationPermExplanation-android-gte-10");
     }
   }
-  
-  $scope.getConsentFile();
+
+  if($scope.platform.toLowerCase() == "ios") {
+    if($scope.osver < 13) {
+        $scope.locationPermExplanation = $translate.instant("intro.permissions.locationPermExplanation-ios-lt-13");
+    } else {
+        $scope.locationPermExplanation = $translate.instant("intro.permissions.locationPermExplanation-ios-gte-13");
+    }
+  }
+
+  $scope.backgroundRestricted = false;
+  if($window.device.manufacturer.toLowerCase() == "samsung") {
+    $scope.backgroundRestricted = true;
+    $scope.allowBackgroundInstructions = $translate.instant("intro.allow_background.samsung");
+  }
+
+  $scope.fitnessPermNeeded = ($scope.platform.toLowerCase() == "ios" ||
+    (($scope.platform.toLowerCase() == "android") && ($scope.osver >= 10)));
+
+  console.log("Explanation = "+$scope.locationPermExplanation);
+
+  var allIntroFiles = Promise.all([
+    i18nUtils.geti18nFileName("templates/", "intro/summary", ".html"),
+    i18nUtils.geti18nFileName("templates/", "intro/consent", ".html"),
+    i18nUtils.geti18nFileName("templates/", "intro/sensor_explanation", ".html"),
+    i18nUtils.geti18nFileName("templates/", "intro/login", ".html")
+  ]);
+  allIntroFiles.then(function(allIntroFilePaths) {
+    $scope.$apply(function() {
+      console.log("intro files are "+allIntroFilePaths);
+      $scope.summaryFile = allIntroFilePaths[0];
+      $scope.consentFile = allIntroFilePaths[1];
+      $scope.explainFile = allIntroFilePaths[2];
+      $scope.loginFile = allIntroFilePaths[3];
+    });
+  });
 
   $scope.getIntroBox = function() {
     return $ionicSlideBoxDelegate.$getByHandle('intro-box');
@@ -104,15 +134,22 @@ angular.module('emission.intro', ['emission.splash.startprefs',
       // ionicToast.show(message, position, stick, time);
       // $scope.next();
       ionicToast.show(userEmail, 'middle', false, 2500);
-      CommHelper.registerUser(function(successResult) {
-        $scope.finish();
-      }, function(errorResult) {
-        $scope.alertError('User registration error', errorResult);
-        $scope.finish();
-      });
+      if (userEmail == "null" || userEmail == "") {
+        $scope.alertError("Invalid login "+userEmail);
+      } else {
+        CommHelper.registerUser(function(successResult) {
+          UpdateCheck.getChannel().then(function(retVal) {
+            CommHelper.updateUser({
+             client: retVal
+            });
+          });
+          $scope.finish();
+        }, function(errorResult) {
+          $scope.alertError('User registration error', errorResult);
+        });
+      }
     }, function(error) {
         $scope.alertError('Sign in error', error);
-        $scope.finish();
     });
   };
 
