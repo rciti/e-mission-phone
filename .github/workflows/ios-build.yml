@@ -11,7 +11,7 @@ on:
     branches: [ master ]
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '* * * * 0'
+    - cron:  '5 4 * * 0'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -36,7 +36,7 @@ jobs:
       run: ls /Applications
 
     - name: Print applications through brew
-      run: brew list
+      run: brew list --formula
 
     - name: Setup the cordova environment
       shell: bash -l {0}
@@ -54,9 +54,11 @@ jobs:
 
     - name: Build ios
       shell: bash -l {0}
-      run: npx cordova build ios
+      run: |
+        source setup/activate_native.sh
+        npx cordova build ios
 
     - name: Cleanup the cordova environment
       shell: bash -l {0}
-      run: source setup/teardown_ios_native.sh
+      run: bash setup/teardown_ios_native.sh
 

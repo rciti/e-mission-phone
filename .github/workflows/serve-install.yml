@@ -36,7 +36,7 @@ jobs:
       run: ls /Applications
 
     - name: Print applications through brew
-      run: brew list
+      run: brew list --formula
 
     - name: Setup the serve environment
       shell: bash -l {0}
@@ -49,6 +49,7 @@ jobs:
         source setup/activate_serve.sh
         echo "cordova version"
         npx cordova -version
+        echo "ionic version"
         npx ionic --version
 
 # TODO: figure out how to check that a server started correctly
