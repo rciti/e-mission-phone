@@ -174,6 +174,27 @@ angular.module('emission.main.diary.list',['ui-leaflet',
     $scope.pickDay = function() {
       ionicDatePicker.openDatePicker($scope.datepickerObject);
     }
+    
+    /**
+     * Embed 'inputType' to the trip
+     */
+    $scope.populateInputFromTimeline = function (tripgj, nextTripgj, inputType, inputList) {
+      var userInput = DiaryHelper.getUserInputForTrip(tripgj, nextTripgj, inputList);
+      if (angular.isDefined(userInput)) {
+          // userInput is an object with data + metadata
+          // the label is the "value" from the options
+          var userInputEntry = $scope.inputParams[inputType].value2entry[userInput.data.label];
+          if (!angular.isDefined(userInputEntry)) {
+            userInputEntry = ConfirmHelper.getFakeEntry(userInput.data.label);
+            $scope.inputParams[inputType].options.push(userInputEntry);
+            $scope.inputParams[inputType].value2entry[userInput.data.label] = userInputEntry;
+          }
+          console.log("Mapped label "+userInput.data.label+" to entry "+JSON.stringify(userInputEntry));
+          tripgj.userInput[inputType] = userInputEntry;
+      }
+      Logger.log("Set "+ inputType + " " + JSON.stringify(userInputEntry) + " for trip id " + JSON.stringify(tripgj.data.id));
+      $scope.editingTrip = angular.undefined;
+    }
 
     /**
      * Embed 'mode' to the trip
