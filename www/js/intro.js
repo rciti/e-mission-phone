@@ -25,7 +25,7 @@ angular.module('emission.intro', ['emission.splash.startprefs',
 .controller('IntroCtrl', function($scope, $state, $window,
     $ionicPlatform, $ionicSlideBoxDelegate,
     $cordovaInAppBrowser, $rootScope,
-    $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, EnketoSurvey, SecretCheck, UpdateCheck, $translate, $cordovaFile, i18nUtils) {
+    $ionicPopup, $ionicHistory, ionicToast, $timeout, CommHelper, StartPrefs, EnketoSurvey, SecretCheck, UpdateCheck, $translate, $cordovaFile) {
 
   $scope.setupPermissionText = function() {
       $scope.platform = $window.device.platform;
