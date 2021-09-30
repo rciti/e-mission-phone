@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="41" id="edu.berkeley.eecs.emission" ios-CFBundleVersion="41" version="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>emission</name>
+<widget android-versionCode="41" id="dev.fourstep.app" ios-CFBundleVersion="41" version="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Fourstep</name>
     <description>
-        A commute pattern tracker and carbon footprint estimator.
+        A commute pattern tracker for travel behaviour research.
     </description>
-    <author email="shankari@eecs.berkeley.edu" href="https://e-mission.eecs.berkeley.edu">
-        E-Mission Team
+    <author email="contact@fourstep.dev" href="https://fourstep.dev">
+        Fourstep Team
   </author>
     <content src="index.html" />
     <access origin="*" />

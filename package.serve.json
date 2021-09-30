@@ -1,11 +1,11 @@
 {
-  "name": "edu.berkeley.eecs.emission",
+  "name": "dev.fourstep.app",
   "version": "2.5.0",
-  "displayName": "emission",
+  "displayName": "Fourstep",
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/e-mission/e-mission-phone.git"
+    "url": "git+https://github.com/fourstep-dev/fourstep-phone.git"
   },
   "scripts": {
     "setup-serve": "./bin/download_settings_controls.js && ./bin/setup_autodeploy.js",
