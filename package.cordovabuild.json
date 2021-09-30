@@ -38,7 +38,7 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-local-notification": {},
       "cordova-plugin-ionic": {
-        "APP_ID": "e0d8cdec",
+        "APP_ID": "d4899000",
         "CHANNEL_NAME": "Production",
         "UPDATE_METHOD": "none",
         "UPDATE_API": "https://api.ionicjs.com",
