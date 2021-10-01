@@ -22,16 +22,12 @@ angular.module('emission.splash.updatecheck', ['emission.plugin.logger',
 
   uc.initChannelPromise = function(currChannel) {
     var deploy = $window.IonicCordova.deploy;
-    if (currChannel == null) {
-        Logger.log("currChannel == null, skipping deploy init");
-        return Promise.resolve(null);
-    } else {
-        var config = {
-            appId: "d4899000",
-            channel: currChannel
-        }
-        return deploy.configure(config);
+    var config = {
+        appId: "d4899000",
+        // Default to production channel
+        channel: currChannel ? currChannel : 'Production',
     }
+    return deploy.configure(config);
   };
 
   var updateProgress = function(prog) {
