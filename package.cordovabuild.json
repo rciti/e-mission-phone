@@ -26,7 +26,7 @@
       "cordova-plugin-file": {},
       "cordova-plugin-device": {},
       "cordova-plugin-customurlscheme": {
-        "URL_SCHEME": "emission"
+        "URL_SCHEME": "fourstep"
       },
       "cordova-plugin-email-composer": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
