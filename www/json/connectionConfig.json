@@ -1,0 +1,16 @@
+{
+  "connectUrl": "https://emission-app.fourstep.dev",
+  "aggregate_call_auth": "user_only",
+  "android": {
+      "auth": {
+          "method": "prompted-auth",
+          "prompt": "<Enter the prompt to display - e.g. Enter your unique token>"
+      }
+  },
+  "ios": {
+      "auth": {
+          "method": "prompted-auth",
+          "prompt": "<Enter the prompt to display - e.g. Enter your unique token>"
+      }
+  }
+}
