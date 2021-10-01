@@ -19,7 +19,8 @@
     ],
     "plugins": {
       "phonegap-plugin-push": {
-        "FCM_VERSION": "17.0.0"
+        "FCM_VERSION": "17.0.0",
+        "SENDER_ID": "316219333608"
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-app-version": {},
